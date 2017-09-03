@@ -13,6 +13,7 @@
 但是要判断有没有超过一半的
 */
 
+//简单解法
 class Gift {
 public:
     int partition(vector<int> &gifts, int left, int right){
@@ -48,5 +49,39 @@ public:
                 left=ans+1;
         }
         return gifts[pos];
+    }
+};
+
+//最优解法
+//若数组中存在元素出现次数超过数组长度的一半，
+//则只可能是这几种情况
+//{2,1,2,3,2}, {1,2,2,2,3}, {1,2,2,3,2}
+//若存在重复次数超过长度一半的数，则所有的++count与--count抵消之后最后count的值必大于等于1
+//且tmp指向这个数
+class Gift {
+public:
+    int getValue(vector<int> nums, int n) {
+        if(nums.size()!=n || nums.size()==0)
+            return 0;
+        int count=0, tmp, len=0;
+        for(int i=0; i<n; i++)
+        {
+            if(count==0)
+            {
+                tmp=nums[i];
+                count=1;
+            }
+            else
+            {
+                if(tmp==nums[i])
+                    ++count;
+                else
+                    --count;
+            }
+        }
+        for(int i=0; i<n; i++)
+            if(nums[i]==tmp)
+                ++len;
+        return (len>n/2)?tmp:0;
     }
 };
